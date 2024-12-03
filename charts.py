@@ -23,7 +23,7 @@ def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) 
     plt.savefig(filename)
     plt.close()
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description='Generate plots from validation_runs table.')
     parser.add_argument('--database', default='validation.sqlite', help='Path to the SQLite database file.')
     args = parser.parse_args()
