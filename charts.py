@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def load_data(database):
+def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
     query = "SELECT * FROM validation_runs"
     df = pd.read_sql_query(query, conn)
     conn.close()
     return df
 
-def plot_and_save(df, y_column, y_label, filename):
+def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) -> None:
     plt.figure()
     plt.plot(df['validation_start_time'], df[y_column], marker='o')
     plt.xlabel('Validation Start Time')
@@ -23,7 +23,7 @@ def plot_and_save(df, y_column, y_label, filename):
     plt.savefig(filename)
     plt.close()
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description='Generate plots from validation_runs table.')
     parser.add_argument('--database', default='validation.sqlite', help='Path to the SQLite database file.')
     args = parser.parse_args()
