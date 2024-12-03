@@ -12,7 +12,7 @@ def load_data(database: str) -> pd.DataFrame:
     conn.close()
     return df
 
-def plot_and_save(df, y_column, y_label, filename):
+def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) -> None:
     plt.figure()
     plt.plot(df['validation_start_time'], df[y_column], marker='o')
     plt.xlabel('Validation Start Time')
