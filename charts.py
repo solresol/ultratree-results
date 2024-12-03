@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def load_data(database):
+def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
     query = "SELECT * FROM validation_runs"
     df = pd.read_sql_query(query, conn)
