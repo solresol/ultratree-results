@@ -1,0 +1,25 @@
+name: Validation Run Trigger
+
+on:
+  push:
+    paths:
+      - 'validation_runs.sql'
+      - '.github/workflows/validation_run_trigger.yaml'
+  pull_request:
+    paths:
+      - 'validation_runs.sql'
+      - '.github/workflows/validation_run_trigger.yaml'
+
+jobs:
+  run_validation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Install Python3 Pandas
+      run: sudo apt-get install -y python3-pandas
+
+    - name: Execute SQL script
+      run: sqlite3 validation.sqlite < validation_runs.sql
