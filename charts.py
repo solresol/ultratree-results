@@ -14,8 +14,9 @@ def load_data(database: str) -> pd.DataFrame:
 
 def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) -> None:
     plt.figure()
-    plt.plot(df['validation_start_time'], df[y_column], marker='o')
-    plt.xlabel('Validation Start Time')
+    plt.plot(df['cutoff_date'], df[y_column], marker='o')
+    plt.xlabel('Cutoff Date')
+    plt.title(f'{y_label} vs Cutoff Date')
     plt.ylabel(y_label)
     plt.title(f'{y_label} vs Validation Start Time')
     plt.xticks(rotation=45)
