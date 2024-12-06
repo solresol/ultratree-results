@@ -36,7 +36,7 @@ def main() -> None:
 
     df = load_data(args.database)
 
-    plot_and_save(df, 'total_loss', 'Total Loss', 'total_loss_vs_time.png')
+    plot_and_save(df, 'total_loss', 'Loss on held-out data', 'total_loss_vs_time.png')
     plot_and_save(df, 'model_node_count', 'Model Node Count', 'model_node_count_vs_time.png')
     plot_and_save(df, 'average_depth', 'Average Depth', 'average_depth_vs_time.png')
     plot_and_save(df, 'average_in_region_hits', 'Average In-Region Hits', 'average_in_region_hits_vs_time.png')
