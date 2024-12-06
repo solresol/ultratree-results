@@ -14,10 +14,14 @@ def load_data(database: str) -> pd.DataFrame:
     return df
 
 def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) -> None:
+    df = df.sort_values(by='cutoff_date')
     plt.figure()
     plt.plot(df['cutoff_date'], df[y_column], marker='o')
     plt.xlabel('Cutoff Date')
-    plt.title(f'{y_label} vs Cutoff Date')
+    if y_label == 'Total Loss':
+        plt.title('Loss on held-out data vs Cutoff Date')
+    else:
+        plt.title(f'{y_label} vs Cutoff Date')
     plt.ylabel(y_label)
     plt.title(f'{y_label} vs Cutoff Date')
     plt.xticks(rotation=45)
