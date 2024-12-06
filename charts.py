@@ -10,6 +10,7 @@ def load_data(database: str) -> pd.DataFrame:
     query = "SELECT * FROM validation_runs"
     df = pd.read_sql_query(query, conn)
     conn.close()
+    df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
     return df
 
 def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) -> None:
