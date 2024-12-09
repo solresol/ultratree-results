@@ -13,21 +13,23 @@ def load_data(database: str) -> pd.DataFrame:
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
     return df
 
-def plot_and_save(df: pd.DataFrame, y_column: str, y_label: str, filename: str) -> None:
-    df = df.sort_values(by='cutoff_date')
+def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str) -> None:
+    df = df.sort_values(by=x_column)
     plt.figure()
-    plt.plot(df['cutoff_date'], df[y_column], marker='o')
-    plt.xlabel('Cutoff Date')
+    plt.plot(df[x_column], df[y_column], marker='o')
+    plt.xlabel(x_label)
     if y_label == 'Total Loss':
-        plt.title('Loss on held-out data vs Cutoff Date')
+        plt.title('Loss on held-out data vs {x_label}')
     else:
-        plt.title(f'{y_label} vs Cutoff Date')
+        plt.title(f'{y_label} vs {x_label}')
     plt.ylabel(y_label)
-    plt.title(f'{y_label} vs Cutoff Date')
+    plt.title(f'{y_label} vs {x_label}')
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()
+
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Generate plots from validation_runs table.')
@@ -36,10 +38,12 @@ def main() -> None:
 
     df = load_data(args.database)
 
-    plot_and_save(df, 'total_loss', 'Loss on held-out data', 'total_loss_vs_time.png')
-    plot_and_save(df, 'model_node_count', 'Model Node Count', 'model_node_count_vs_time.png')
-    plot_and_save(df, 'average_depth', 'Average Depth', 'average_depth_vs_time.png')
-    plot_and_save(df, 'average_in_region_hits', 'Average In-Region Hits', 'average_in_region_hits_vs_time.png')
+    plot_and_save(df, 'cutoff_date', 'Model creation date', 'total_loss', 'Loss on held-out data', 'total_loss_vs_time.png')
+    plot_and_save(df, 'cutoff_date', 'Model creation date', 'model_node_count', 'Model Node Count', 'model_node_count_vs_time.png')
+    plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_depth', 'Average Depth', 'average_depth_vs_time.png')
+    plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_in_region_hits', 'Average In-Region Hits', 'average_in_region_hits_vs_time.png')
+
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size.png')
 
 if __name__ == '__main__':
     main()

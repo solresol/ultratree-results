@@ -1,7 +1,10 @@
 # ultratree-results
 This shows the results of the ultrametric tree-based, explainable, solar-powered language model
 
-## Key Metrics
+![Total Loss vs Model Size](total_loss_vs_model_size.png)
+
+
+## Time Views
 
 ![Total Loss vs Time](total_loss_vs_time.png)
 
