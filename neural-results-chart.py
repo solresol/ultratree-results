@@ -9,24 +9,26 @@ import pandas as pd
 
 def read_csv(file_path: str) -> pd.DataFrame:
 
-    df = pd.read_csv(file_path)
+    try:
+        df = pd.read_csv(file_path)
 
         # Check and fix duplicate column names
         if df.columns.duplicated().any():
-        duplicates = df.columns[df.columns.duplicated()].tolist()
-        logging.warning("Duplicate column names found: %s", duplicates)
-        df.columns = pd.io.parsers.ParserBase({'names':df.columns})._maybe_dedup_names(df.columns)
+            duplicates = df.columns[df.columns.duplicated()].tolist()
+            logging.warning("Duplicate column names found: %s", duplicates)
+            df.columns = pd.io.parsers.ParserBase({'names':df.columns})._maybe_dedup_names(df.columns)
+        
         if 'model_node_count' not in df.columns:
-        logging.error("DataFrame columns: %s", df.columns)
-        raise ValueError(
-            "'model_node_count' column is missing from the input DataFrame. "
-            "Possible reasons: the CSV file might be outdated or incorrectly generated. "
-            "Please check the data generation process and ensure the CSV file is up-to-date."
-        )
+            logging.error("DataFrame columns: %s", df.columns)
+            raise ValueError(
+                "'model_node_count' column is missing from the input DataFrame. "
+                "Possible reasons: the CSV file might be outdated or incorrectly generated. "
+                "Please check the data generation process and ensure the CSV file is up-to-date."
+            )
         return df
-    except ValueError as e:
-    logging.error("Error: %s", e)
-    exit(1)
+    except Exception as e:
+        logging.error("Error: %s", e)
+        exit(1)
 
 def plot_data(df: pd.DataFrame, output_file: str) -> None:
     try:
