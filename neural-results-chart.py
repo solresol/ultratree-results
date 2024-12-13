@@ -8,6 +8,12 @@ import pandas as pd
 def read_csv(file_path: str) -> pd.DataFrame:
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
         df = pd.read_csv(file_path)
+
+        # Check and fix duplicate column names
+        if df.columns.duplicated().any():
+            duplicates = df.columns[df.columns.duplicated()].tolist()
+            logging.warning("Duplicate column names found: %s", duplicates)
+            df.columns = pd.io.parsers.ParserBase({'names':df.columns})._maybe_dedup_names(df.columns)
         if 'model_node_count' not in df.columns:
             logging.error("DataFrame columns: %s", df.columns)
             raise ValueError(
