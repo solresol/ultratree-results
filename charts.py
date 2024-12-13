@@ -7,7 +7,7 @@ import pandas as pd
 
 def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
-    query = "SELECT * FROM validation_runs"
+    query = "SELECT *, model_node_count FROM validation_runs"
     df = pd.read_sql_query(query, conn)
     conn.close()
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
