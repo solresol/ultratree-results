@@ -1,0 +1,39 @@
+name: Generate and Commit Neural Results Chart
+
+on:
+  push:
+    paths:
+      - 'neural-results-chart.py'
+      - 'neural-results.csv'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pandas matplotlib
+
+    - name: Run neural-results-chart.py
+      run: python neural-results-chart.py --input neural-results.csv --output neural-results.png
+
+    - name: Configure Git
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+    - name: Commit and push changes
+      run: |
+        git add neural-results.png
+        git commit -m "Update neural-results.png"
+        git push
