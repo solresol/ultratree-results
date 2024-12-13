@@ -6,7 +6,7 @@ import pandas as pd
 
 def read_csv(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
-    df['model_parameter_count'] = df['embedding_size'] * df['hidden_layer_size']
+    
     return df
 
 def plot_data(df: pd.DataFrame, output_file: str) -> None:
