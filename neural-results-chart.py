@@ -1,12 +1,14 @@
+import logging
+import logging
 import argparse
 
-import logging
+logging.basicConfig(level=logging.DEBUG)
 import matplotlib.pyplot as plt
 import pandas as pd
 
 
 def read_csv(file_path: str) -> pd.DataFrame:
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
         df = pd.read_csv(file_path)
 
         # Check and fix duplicate column names
