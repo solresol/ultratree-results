@@ -43,23 +43,13 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-## CSV File Structure
+"""
+CSV File Structure
+------------------
 
 The input CSV file must contain the following columns:
-- `model_node_count`: Represents the count of nodes in the model.
-- `total_loss`: Represents the total loss value.
+- `model_node_count`: Integer, represents the count of nodes in the model.
+- `total_loss`: Float, represents the total loss value.
 
 Ensure that these columns are present in your CSV file before running the script.
-
-## Verifying CSV Structure
-
-To verify the structure of your CSV file, you can use the following Python snippet with pandas:
-
-```python
-import pandas as pd
-
-df = pd.read_csv('your-file.csv')
-print(df.columns)
-```
-
-This will print the columns present in your CSV file. Make sure `model_node_count` and `total_loss` are listed.
+"""
