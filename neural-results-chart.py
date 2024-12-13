@@ -19,15 +19,24 @@ def read_csv(file_path: str) -> pd.DataFrame:
             df.columns = pd.io.parsers.ParserBase({'names':df.columns})._maybe_dedup_names(df.columns)
         
         if 'model_node_count' not in df.columns:
-            logging.error("DataFrame columns: %s", df.columns)
-            raise ValueError(
+            logging.warning(
                 "'model_node_count' column is missing from the input DataFrame. "
-                "Possible reasons: the CSV file might be outdated or incorrectly generated. "
-                "Please check the data generation process and ensure the CSV file is up-to-date."
+                "The script will proceed without plotting this data. "
+                "Please update the CSV file or check the data generation process."
             )
+            df['model_node_count'] = None  # Add a placeholder column to allow the script to continue
         return df
+    except pd.errors.EmptyDataError:
+        logging.error("The CSV file is empty. Please provide a valid CSV file with data.")
+        exit(1)
+    except pd.errors.ParserError:
+        logging.error("Error parsing the CSV file. Please ensure the file is correctly formatted.")
+        exit(1)
+    except FileNotFoundError:
+        logging.error("The specified CSV file was not found. Please check the file path and try again.")
+        exit(1)
     except Exception as e:
-        logging.error("Error: %s", e)
+        logging.error("An unexpected error occurred: %s", e)
         exit(1)
 
 def plot_data(df: pd.DataFrame, output_file: str) -> None:
