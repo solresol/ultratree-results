@@ -7,7 +7,7 @@ CREATE TABLE validation_runs (
                    description text not null,
                    model_file text not null,
                    model_table text not null,
-                   model_node_count integer,
+                   model_node_count integer not null,
                    cutoff_date timestamp,
                    context_length integer,
                    validation_datafile text not null,
@@ -18,7 +18,7 @@ CREATE TABLE validation_runs (
                    average_depth float,
                    average_in_region_hits float
                 );
-INSERT INTO validation_runs VALUES(1,'2024-12-03 07:52:03',NULL,'Initial validation checking','/ultratree/language-model/tiny.sqlite','nodes',25,'2024-11-29 13:00:00+00:00',16,'/ultratree/language-model/validation.sqlite','training_data','inferences',NULL,NULL,NULL,NULL);
+INSERT INTO validation_runs VALUES(1,'2024-12-03 07:52:03',NULL,'Initial validation checking','/ultratree/language-model/tiny.sqlite','nodes',25,'2024-11-29 13:00:00+00:00',16,'/ultratree/language-model/validation.sqlite','training_data','inferences',0,0.0,0.0,0.0);
 INSERT INTO validation_runs VALUES(2,'2024-12-03 07:55:14','2024-12-03 07:55:18','Initial validation checking','/ultratree/language-model/tiny.sqlite','nodes',25,'2024-11-29 13:00:00+00:00',16,'/ultratree/language-model/validation.sqlite','training_data','inferences',1557,1236.66015625,12.0,0.0);
 INSERT INTO validation_runs VALUES(3,'2024-12-03 07:56:05','2024-12-03 07:56:57','Default daily 2024-11-30','/ultratree/language-model/tiny.sqlite','nodes',919,'2024-11-30 13:00:00+00:00',16,'/ultratree/language-model/validation.sqlite','training_data','inferences',1557,1223.1953125,389.811175337186909,0.288375080282594731);
 INSERT INTO validation_runs VALUES(4,'2024-12-03 08:11:06','2024-12-03 08:11:59','Default daily 2024-12-01','/ultratree/language-model/tiny.sqlite','nodes',1325,'2024-12-01 13:00:00+00:00',16,'/ultratree/language-model/validation.sqlite','training_data','inferences',1557,1222.169921875,390.899807321772641,0.294797687861271695);
