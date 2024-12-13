@@ -13,8 +13,9 @@ def plot_data(df: pd.DataFrame, output_file: str) -> None:
     grouped = df.groupby('augmentation')
     plt.figure()
     for name, group in grouped:
-        plt.plot(group['model_parameter_count'], group['total_loss'], marker='o', label=name)
-    plt.xlabel('Model Parameter Count')
+        plt.plot(group['model_node_count'], group['total_loss'], marker='o', label=name)
+    plt.xlabel('Model Node Count')
+    plt.title('Total Loss vs Model Node Count')
     plt.ylabel('Total Loss')
     plt.title('Total Loss vs Model Parameter Count')
     plt.legend()
