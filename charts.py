@@ -1,8 +1,11 @@
 import argparse
+import logging
 import sqlite3
 
 import matplotlib.pyplot as plt
 import pandas as pd
+
+logging.basicConfig(level=logging.INFO)
 
 
 def load_data(database: str) -> pd.DataFrame:
@@ -11,6 +14,17 @@ def load_data(database: str) -> pd.DataFrame:
     df = pd.read_sql_query(query, conn)
     conn.close()
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
+
+    duplicated_columns = df.columns.duplicated()
+    if duplicated_columns.any():
+        logging.info('Duplicate columns detected. Renaming to make them unique.')
+        df.columns = pd.io.parsers.ParserBase({'names':df.columns})._maybe_dedup_names(df.columns)
+        for i, duplicated in enumerate(duplicated_columns):
+            if duplicated:
+                new_name = df.columns[i] + '_dup'
+                logging.info(f'Renaming \"{df.columns[i]}\" to \"{new_name}\"')
+                df = df.rename(columns={df.columns[i]: new_name})
+
     return df
 
 def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str) -> None:
