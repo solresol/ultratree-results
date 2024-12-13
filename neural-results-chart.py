@@ -10,6 +10,8 @@ def read_csv(file_path: str) -> pd.DataFrame:
     return df
 
 def plot_data(df: pd.DataFrame, output_file: str) -> None:
+    if 'model_node_count' not in df.columns:
+        raise ValueError("'model_node_count' column is missing from the input DataFrame. Please ensure the CSV file has the correct structure.")
     grouped = df.groupby('augmentation')
     plt.figure()
     for name, group in grouped:
@@ -24,7 +26,7 @@ def plot_data(df: pd.DataFrame, output_file: str) -> None:
     plt.close()
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Plot total_loss vs model_parameter_count from a CSV file.')
+    parser = argparse.ArgumentParser(description="Plot total_loss vs model_node_count from a CSV file. The CSV file must contain the columns 'model_node_count' and 'total_loss'.")
     parser.add_argument('--input', default='neural-results.csv', help='Path to the input CSV file.')
     parser.add_argument('--output', default='neural-results.png', help='Path to the output PNG file.')
     args = parser.parse_args()
