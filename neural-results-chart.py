@@ -1,17 +1,23 @@
 import argparse
 
+import logging
 import matplotlib.pyplot as plt
 import pandas as pd
 
 
 def read_csv(file_path: str) -> pd.DataFrame:
-    try:
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
         df = pd.read_csv(file_path)
         if 'model_node_count' not in df.columns:
-            raise ValueError("'model_node_count' column is missing from the input DataFrame. Please ensure the CSV file has the correct structure.")
+            logging.error("DataFrame columns: %s", df.columns)
+            raise ValueError(
+                "'model_node_count' column is missing from the input DataFrame. "
+                "Possible reasons: the CSV file might be outdated or incorrectly generated. "
+                "Please check the data generation process and ensure the CSV file is up-to-date."
+            )
         return df
     except ValueError as e:
-        print(f"Error: {e}")
+        logging.error("Error: %s", e)
         exit(1)
 
 def plot_data(df: pd.DataFrame, output_file: str) -> None:
