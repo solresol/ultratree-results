@@ -16,7 +16,7 @@ def load_data(database: str) -> pd.DataFrame:
 def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x = False) -> None:
     df = df.sort_values(by=x_column)
     plt.figure()
-    plt.plot(df[x_column], df[y_column], marker='o')
+    plt.scatter(df[x_column], df[y_column], marker='o')
     plt.xlabel(x_label)
     if y_label == 'Total Loss':
         plt.title('Loss on held-out data vs {x_label}')
