@@ -4,6 +4,7 @@ embedding_size,hidden_layer_size,augmentation,model_parameter_count,number_of_da
 8,16,Sense Annotated,132439,1557,868.544921875
 16,32,Sense Annotated,263759,1557,838.85546875
 32,64,Sense Annotated,538687,1557,833.322265625
+96,192,Sense Annotated,1802239,1557,830.0947265625
 64,128,Sense Annotated,1137695,1557,851.099609375
 128,256,Sense Annotated,2532319,1557,821.2080078125
 128,512,Sense Annotated,4391903,1557,857.64453125
@@ -13,5 +14,6 @@ embedding_size,hidden_layer_size,augmentation,model_parameter_count,number_of_da
 16,32,Unannotated,383270,1557,822.818359375
 32,64,Unannotated,775270,1557,846.12890625
 64,128,Unannotated,1608422,1557,857.744140625
+96,192,Unannotated,2507110,1557,822.21484375
 128,256,Unannotated,3471334,1557,832.511962890625
 128,512,Unannotated,5955302,1557,808.734619140625
