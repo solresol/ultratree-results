@@ -20,6 +20,7 @@ def plot_data(df: pd.DataFrame, output_file: str) -> None:
     plt.legend()
     plt.tight_layout()
     plt.xscale('log')
+    plt.yscale('log')
     plt.savefig(output_file)
     plt.close()
 
