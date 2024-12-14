@@ -28,7 +28,7 @@ def main() -> None:
     parser.add_argument('--output', default='neural-results.png', help='Path to the output PNG file.')
     args = parser.parse_args()
 
-    df = read_csv(args.input)
+    df = read_csv(args.input).sort_values('model_parameter_count')
     plot_data(df, args.output)
 
 if __name__ == '__main__':
