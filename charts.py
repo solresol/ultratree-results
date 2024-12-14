@@ -13,7 +13,7 @@ def load_data(database: str) -> pd.DataFrame:
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
     return df
 
-def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False) -> None:
+def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False) -> None:
     df = df.sort_values(by=x_column)
     plt.figure()
     #plt.scatter(df[x_column], df[y_column], marker='o')
@@ -28,6 +28,8 @@ def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, 
     plt.xticks(rotation=45)
     if log_x:
        plt.xscale('log')
+    if log_y:
+       plt.yscale('log')
     plt.tight_layout()
     plt.savefig(filename)
     plt.close()
@@ -46,7 +48,7 @@ def main() -> None:
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_depth', 'Average Depth', 'average_depth_vs_time.png')
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_in_region_hits', 'Average In-Region Hits', 'average_in_region_hits_vs_time.png')
 
-    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size.png', log_x = True)
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size.png', log_y = True)
 
 if __name__ == '__main__':
     main()
