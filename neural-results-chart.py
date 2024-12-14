@@ -19,6 +19,7 @@ def plot_data(df: pd.DataFrame, output_file: str) -> None:
     plt.title('Total Loss vs Model Parameter Count')
     plt.legend()
     plt.tight_layout()
+    plt.xscale('log')
     plt.savefig(output_file)
     plt.close()
 
