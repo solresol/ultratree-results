@@ -13,7 +13,7 @@ def load_data(database: str) -> pd.DataFrame:
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
     return df
 
-def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x = False) -> None:
+def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False) -> None:
     df = df.sort_values(by=x_column)
     plt.figure()
     plt.scatter(df[x_column], df[y_column], marker='o')
