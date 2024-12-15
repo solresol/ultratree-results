@@ -3,17 +3,17 @@ name: Validation Run Trigger
 on:
   push:
     paths:
-      - 'validation_runs.sql'
+      - 'evaluation_runs.sql'
       - 'charts.py'
       - '.github/workflows/validation_run_trigger.yaml'
-      - 'charts.py'
   pull_request:
     paths:
-      - 'validation_runs.sql'
+      - 'evaluation_runs.sql'
+      - 'charts.py'
       - '.github/workflows/validation_run_trigger.yaml'
 
 jobs:
-  run_validation:
+  make_evaluation_charts:
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository
@@ -23,7 +23,8 @@ jobs:
       run: sudo apt-get install -y python3-pandas
 
     - name: Execute SQL script
-      run: sqlite3 validation.sqlite < validation_runs.sql
+      run: sqlite3 inferences.sqlite < evaluation_runs.sql
+     
     - name: Run charts.py
       run: python charts.py
     - name: Commit and Push Changes

@@ -7,7 +7,7 @@ import pandas as pd
 
 def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
-    query = "SELECT * FROM validation_runs"
+    query = "SELECT * FROM evaluation_runs"
     df = pd.read_sql_query(query, conn)
     conn.close()
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
@@ -33,7 +33,7 @@ def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Generate plots from validation_runs table.')
-    parser.add_argument('--database', default='validation.sqlite', help='Path to the SQLite database file.')
+    parser.add_argument('--database', default='inferences.sqlite', help='Path to the SQLite database file.')
     args = parser.parse_args()
 
     df = load_data(args.database)
