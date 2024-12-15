@@ -1,9 +1,10 @@
 import argparse
 import sqlite3
 
-import matplotlib.pyplot as plt
+import matplotlib.pyplot
 import pandas as pd
-
+import os
+import sys
 
 def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
@@ -15,24 +16,35 @@ def load_data(database: str) -> pd.DataFrame:
 
 def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False) -> None:
     df = df.sort_values(by=x_column)
-    plt.figure()
-    #plt.scatter(df[x_column], df[y_column], marker='o')
-    plt.plot(df[x_column], df[y_column], marker='o')
-    plt.xlabel(x_label)
+    fig, ax = matplotlib.pyplot.subplots()
+    for modelfile in sorted(df.model_file.unique()):
+        basename = os.path.basename(modelfile)
+        if basename == 'tiny.sqlite':
+            basename = 'sense-annotated1.sqlite'
+        if not basename.endswith('.sqlite'):
+            sys.exit(f"Don't know how to handle the model {modelfile}")
+        basename = basename[:-7]
+        basename = basename.replace('-', ' ')
+        basename = basename[:-1] + ' ' + basename[-1]
+        basename = basename.title()
+        this_model = df[df.model_file == modelfile]
+        this_model.set_index(x_column).sort_index()[y_column].plot(label=basename, marker='o')
+        #ax.plot(df[x_column], df[y_column], marker='o')
+    ax.set_xlabel(x_label)
     if y_label == 'Total Loss':
-        plt.title('Loss on held-out data vs {x_label}')
+        ax.set_title('Loss on held-out data vs {x_label}')
     else:
-        plt.title(f'{y_label} vs {x_label}')
-    plt.ylabel(y_label)
-    plt.title(f'{y_label} vs {x_label}')
-    plt.xticks(rotation=45)
+        ax.set_title(f'{y_label} vs {x_label}')
+    ax.set_ylabel(y_label)
+    ax.set_title(f'{y_label} vs {x_label}')
+    ax.legend()
+    #ax.set_xticklabels(rotation=45)
     if log_x:
-       plt.xscale('log')
+       ax.set_xscale('log')
     if log_y:
-       plt.yscale('log')
-    plt.tight_layout()
-    plt.savefig(filename)
-    plt.close()
+       ax.set_yscale('log')
+    fig.tight_layout()
+    fig.savefig(filename)
 
 
 
