@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Pull latest changes
+      run: |
+        git fetch origin
+        git checkout main
+        git pull origin main --rebase
+
+    - name: Build and Test
+      run: |
+        # Add build and test commands here
+
+    - name: Commit and Push changes
+      if: success()
+      run: |
+        git add .
+        git commit -m "Add generated images [skip ci]"
+        git push origin main
