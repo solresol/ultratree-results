@@ -20,6 +20,7 @@ def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, 
     for modelfile in sorted(df.model_file.unique()):
         basename = os.path.basename(modelfile)
         if basename == 'tiny.sqlite':
+            # Hopefully all references are gone
             basename = 'sense-annotated1.sqlite'
         if not basename.endswith('.sqlite'):
             sys.exit(f"Don't know how to handle the model {modelfile}")
@@ -27,6 +28,8 @@ def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, 
         basename = basename.replace('-', ' ')
         basename = basename[:-1] + ' ' + basename[-1]
         basename = basename.title()
+        if ',' in basename:
+            basename = 'Ensemble'
         this_model = df[df.model_file == modelfile]
         this_model.set_index(x_column).sort_index()[y_column].plot(label=basename, marker='o')
         #ax.plot(df[x_column], df[y_column], marker='o')
