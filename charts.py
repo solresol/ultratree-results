@@ -8,7 +8,7 @@ import sys
 
 def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
-    query = "SELECT * FROM evaluation_runs where model_node_count is not null"
+    query = "SELECT * FROM evaluation_runs where model_node_count is not null and total_loss is not null"
     df = pd.read_sql_query(query, conn)
     conn.close()
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
