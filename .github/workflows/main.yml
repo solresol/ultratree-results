@@ -31,8 +31,12 @@ jobs:
       run: |
         # Add build and test commands here
 
+    - name: Check for changes
+      run: |
+        git diff --quiet || echo "Changes detected"
+    
     - name: Commit and Push changes
-      if: success()
+      if: success() && steps.check-for-changes.outputs.changes-detected == 'Changes detected'
       run: |
         git add .
         git commit -m "Add generated images [skip ci]"
