@@ -14,7 +14,7 @@ def load_data(database: str) -> pd.DataFrame:
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
     return df
 
-def modelfile2displayname(modelfile):
+def modelfile2displayname(modelfile: str) -> str:
     if ',' in modelfile:
         return "Ensemble"
     basename = os.path.basename(modelfile)
