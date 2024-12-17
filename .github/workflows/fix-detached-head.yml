@@ -1,0 +1,38 @@
+name: Fix Detached HEAD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  fix-detached-head:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Create branch if detached
+      run: |
+        if [ "$(git rev-parse --abbrev-ref HEAD)" = "HEAD" ]; then
+          git checkout -b temp-branch
+        fi
+
+    - name: Check for changes
+      id: git_changes
+      run: |
+        git diff --exit-code || echo "changes"
+
+    - name: Run charts.py
+      if: steps.git_changes.outputs.changes == 'changes'
+      run: |
+        python charts.py --database inferences.sqlite
+
+    - name: Run neural-results-chart.py
+      if: steps.git_changes.outputs.changes == 'changes'
+      run: |
+        python neural-results-chart.py --input neural-results.csv --output neural-results.png --tree-data-input inferences.sqlite
