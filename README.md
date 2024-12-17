@@ -5,6 +5,8 @@ These charts update each day.
 
 ![Total Loss vs Model Size](total_loss_vs_model_size.png)
 
+![Total Loss vs Model Size for Sense Annotated Models Including Ensembling](total_loss_vs_model_size_with_ensemble.png)
+
 
 ## Time Views
 
@@ -12,12 +14,16 @@ These charts update each day.
 
 ![Model Node Count vs Time](model_node_count_vs_time.png)
 
-## Model Complexity
-
 ## Neural Network
+
+This plot shows the Total Loss vs Model Parameter Count for different augmentations of neural network models, together with a sample sense annotated, and unannotated model for comparison.
+
+To-do: if the ensemble looks good, add it to the chart
+
 ![Neural Network Results](neural-results.png)
 
-This plot shows the Total Loss vs Model Parameter Count for different augmentations of neural network models.
+
+## Model Complexity
 
 ![Average Depth vs Time](average_depth_vs_time.png)
 
