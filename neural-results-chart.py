@@ -7,11 +7,13 @@ import sqlite3
 def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, output_file: str) -> None:
     fig, ax = matplotlib.pyplot.subplots()
     # just show the #1 model to keep the chart simple
-    tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite')]
+    tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',')]
     for name in sorted(tree_df.model_file.unique()):
         sub_df = tree_df[tree_df.model_file == name]
         if 'unannotated' in name:
             label='Ultra-tree unannotated model'
+        elif ',' in name:
+            label="Ensemble"
         else:
             label='Ultra-tree sense annotated model'
         sub_df.set_index('model_node_count').sort_index().total_loss.plot(ax=ax, label=label, marker="o")
