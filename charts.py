@@ -14,7 +14,7 @@ def load_data(database: str) -> pd.DataFrame:
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
     return df
 
-def modelfile2displayname(modelfile):
+def modelfile2displayname(modelfile: str) -> str:
     if ',' in modelfile:
         return "Ensemble"
     basename = os.path.basename(modelfile)
@@ -31,7 +31,7 @@ def modelfile2displayname(modelfile):
     return basename
     
 
-def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False, skip_list = []) -> None:
+def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False, skip_list: list[str] = []) -> None:
     df = df.sort_values(by=x_column)
     fig, ax = matplotlib.pyplot.subplots()
     display_names = { modelfile2displayname(modelfile) : modelfile for modelfile in df.model_file.unique()}
