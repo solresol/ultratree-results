@@ -4,8 +4,7 @@ import matplotlib.pyplot
 import pandas as pd
 import sqlite3
 
-def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, output_file: str) -> None:
-    fig, ax = matplotlib.pyplot.subplots()
+def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax, column_name, column_title) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',')]
     for name in sorted(tree_df.model_file.unique()):
@@ -16,17 +15,15 @@ def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, output_file: str) -> None
             label="Ensemble"
         else:
             label='Ultra-tree sense annotated model'
-        sub_df.set_index('model_node_count').sort_index().total_loss.plot(ax=ax, label=label, marker="o")
+        sub_df.set_index('model_node_count').sort_index()[column_name].plot(ax=ax, label=label, marker="o")
     for name in sorted(df.augmentation.unique()):
-        df[df.augmentation == name].set_index('model_parameter_count').total_loss.plot(ax=ax, marker='o', label=f"{name} neural")
+        df[df.augmentation == name].set_index('model_parameter_count')[column_name].plot(ax=ax, marker='o', label=f"{name} neural")
     ax.set_xlabel('Model Parameter Count')
-    ax.set_ylabel('Total Loss')
-    ax.set_title('Total Loss vs Model Parameter Count')
+    ax.set_ylabel(f'{column_title}')
+    ax.set_title(f'{column_title} vs Model Parameter Count')
     ax.set_xscale('log')
     #ax.set_yscale('log')
     ax.legend()
-    fig.tight_layout()
-    fig.savefig(output_file)
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Plot total_loss vs model_parameter_count from a CSV file.')
@@ -37,9 +34,21 @@ def main() -> None:
 
     neural_df = pd.read_csv(args.input).sort_values('model_parameter_count')
     conn = sqlite3.connect(args.tree_data_input)
-    tree_df = pd.read_sql('select * from evaluation_runs where model_node_count is not null and total_loss is not null', conn)
-    
-    plot_data(neural_df, tree_df, args.output)
+    tree_df = pd.read_sql("""
+       select evaluation_run_id, model_file, model_node_count, total_loss, sum(loss) as noun_loss
+         from inferences join evaluation_runs using (evaluation_run_id)
+        where model_node_count is not null and total_loss is not null
+          and correct_path like '1.%.%'
+     group by evaluation_run_id, model_file, model_node_count, total_loss
+      """, conn)
 
+    fig, axes = matplotlib.pyplot.subplots(nrows=2, figsize=(10,18))
+    
+    plot_data(neural_df, tree_df, axes[0], 'total_loss', "Total Loss")
+    plot_data(neural_df, tree_df, axes[1], 'noun_loss', "Noun Loss")    
+
+    fig.tight_layout()
+    fig.savefig(args.output)
+    
 if __name__ == '__main__':
     main()
