@@ -8,7 +8,14 @@ import sys
 
 def load_data(database: str) -> pd.DataFrame:
     conn = sqlite3.connect(database)
-    query = "SELECT * FROM evaluation_runs where model_node_count is not null and total_loss is not null"
+    #query = "SELECT * FROM evaluation_runs where model_node_count is not null and total_loss is not null"
+    query = """
+    select evaluation_run_id, model_file, model_node_count, total_loss, average_depth, average_in_region_hits, cutoff_date, sum(loss) as noun_loss
+         from inferences join evaluation_runs using (evaluation_run_id)
+        where model_node_count is not null and total_loss is not null
+          and correct_path like '1.%.%'
+     group by evaluation_run_id, model_file, model_node_count, total_loss, average_depth, average_in_region_hits, cutoff_date
+    """
     df = pd.read_sql_query(query, conn)
     conn.close()
     df['cutoff_date'] = pd.to_datetime(df['cutoff_date'])
@@ -26,7 +33,10 @@ def modelfile2displayname(modelfile: str) -> str:
         sys.exit(f"Don't know how to handle the model {modelfile}")
     basename = basename[:-7]
     basename = basename.replace('-', ' ')
-    basename = basename[:-1] + ' ' + basename[-1]
+    if basename[-1].endswith('0'):
+        pass
+    else:
+        basename = basename[:-1] + ' ' + basename[-1]
     basename = basename.title()
     return basename
     
@@ -75,13 +85,16 @@ def main() -> None:
     df = load_data(args.database)
 
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'total_loss', 'Loss on held-out data', 'total_loss_vs_time.png')
+    plot_and_save(df, 'cutoff_date', 'Model creation date', 'noun_loss', 'Loss on nouns in held-out data', 'noun_loss_vs_time.png')
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'model_node_count', 'Model Node Count', 'model_node_count_vs_time.png')
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_depth', 'Average Depth', 'average_depth_vs_time.png')
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_in_region_hits', 'Average In-Region Hits', 'average_in_region_hits_vs_time.png')
 
     plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size.png', skip_list = ['Ensemble'])
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out noun data', 'noun_loss_vs_model_size.png', skip_list = ['Ensemble'])    
 
-    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1'])
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1', 'Careful10', 'Careful100', 'Careful10000'])
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out noun data', 'noun_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1', 'Careful10', 'Careful100', 'Careful10000'])    
 
 if __name__ == '__main__':
     main()

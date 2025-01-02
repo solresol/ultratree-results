@@ -3,14 +3,27 @@ This shows the results of the ultrametric tree-based, explainable, solar-powered
 
 These charts update each day.
 
+## Total Loss
+
 ![Total Loss vs Model Size](total_loss_vs_model_size.png)
 
 ![Total Loss vs Model Size for Sense Annotated Models Including Ensembling](total_loss_vs_model_size_with_ensemble.png)
+
+## Noun Loss
+
+Instead of looking at the total loss over all parts of speech, we would expect that nouns would get the most benefit from
+having sense annotation into a hierarchy.
+
+![Noun Loss vs Model Size](noun_loss_vs_model_size.png)
+
+![Noun Loss vs Model Size for Sense Annotated Models Including Ensembling](noun_loss_vs_model_size_with_ensemble.png)
 
 
 ## Time Views
 
 ![Total Loss vs Time](total_loss_vs_time.png)
+
+![Noun Loss vs Time](noun_loss_vs_time.png)
 
 ![Model Node Count vs Time](model_node_count_vs_time.png)
 
