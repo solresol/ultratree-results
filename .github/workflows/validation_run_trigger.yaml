@@ -4,11 +4,13 @@ on:
   push:
     paths:
       - 'evaluation_runs.sql'
+      - 'inferences.sql'      
       - 'charts.py'
       - '.github/workflows/validation_run_trigger.yaml'
   pull_request:
     paths:
       - 'evaluation_runs.sql'
+      - 'inferences.sql'            
       - 'charts.py'
       - '.github/workflows/validation_run_trigger.yaml'
 
@@ -22,8 +24,11 @@ jobs:
     - name: Install Python3 Pandas
       run: sudo apt-get install -y python3-pandas
 
-    - name: Execute SQL script
+    - name: Restore evaluation runs
       run: sqlite3 inferences.sqlite < evaluation_runs.sql
+
+    - name: Restore inferences
+      run: sqlite3 inferences.sqlite < inferences.sql      
      
     - name: Run charts.py
       run: python charts.py
