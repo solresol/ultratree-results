@@ -1,10 +1,11 @@
 import argparse
 
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 import pandas as pd
 import sqlite3
 
-def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax, column_name, column_title) -> None:
+def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',')]
     for name in sorted(tree_df.model_file.unique()):
