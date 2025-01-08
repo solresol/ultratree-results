@@ -41,6 +41,6 @@ jobs:
     - name: Commit and push changes
       run: |
         git add neural-results.png
-        git add noun-baseline.png        
+        git add noun-baseline.png
         git commit -m "Update neural-results.png"
         git push
