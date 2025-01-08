@@ -17,7 +17,7 @@ def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax, column_name, column_t
         else:
             label='Ultra-tree sense annotated model'
             continue
-        sub_df.set_index('model_node_count').sort_index()[column_name].plot(ax=ax, label=label, marker="o")
+        sub_df.set_index('model_node_count').sort_index()[column_name].plot(ax=ax, label=label, marker="^", color="red", linestyle="dashed")
     for name in sorted(df.augmentation.unique()):
         df[df.augmentation == name].set_index('model_parameter_count')[column_name].plot(ax=ax, marker='o', label=f"{name} neural")
     ax.set_xlabel('Model Parameter Count')
