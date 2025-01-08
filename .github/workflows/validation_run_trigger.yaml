@@ -51,6 +51,7 @@ jobs:
         git add noun_loss_vs_model_size.png
         git add noun_loss_vs_model_size_with_ensemble.png
         git add noun_loss_vs_time.png
-        git add neural-results.png        
+        git add neural-results.png 
+	git add  plain_models_loss_vs_size.png
         git commit -m "Add generated images [skip ci]" || echo "No changes to commit"
         git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
