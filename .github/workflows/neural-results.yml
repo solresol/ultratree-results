@@ -5,6 +5,7 @@ on:
     paths:
       - 'neural-results-chart.py'
       - 'neural-results.csv'
+      - '.github/workflows/neural-results.yml'
 
 jobs:
   build:
