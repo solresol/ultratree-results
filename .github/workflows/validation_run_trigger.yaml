@@ -47,10 +47,10 @@ jobs:
       run: python3 neural-results-chart.py --input neural-results.csv --output neural-results.png
 
     - name: Run context history for sense1
-      run: python3 ctxkhistochart.py --input inferences.sqlite --output sense-annotated1-context-usage.png --filename /ultratree/language-model/sense-annotated1.sqlite
+      run: python3 ctxkhistochart.py --database inferences.sqlite --output sense-annotated1-context-usage.png --filename /ultratree/language-model/sense-annotated1.sqlite
 
     - name: Run context history for unannotated1
-      run: python3 ctxkhistochart.py --input inferences.sqlite --output unannotated-context-usage.png --filename /ultratree/language-model/unannotated-model1.sqlite
+      run: python3 ctxkhistochart.py --database inferences.sqlite --output unannotated-context-usage.png --filename /ultratree/language-model/unannotated-model1.sqlite
       
     - name: Commit and Push Changes
       env:
