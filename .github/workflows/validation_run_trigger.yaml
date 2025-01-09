@@ -6,12 +6,16 @@ on:
       - 'evaluation_runs.sql'
       - 'inferences.sql'      
       - 'charts.py'
+      - 'context_snapshots.sql'
+      - 'context_usage.sql'
       - '.github/workflows/validation_run_trigger.yaml'
   pull_request:
     paths:
       - 'evaluation_runs.sql'
       - 'inferences.sql'            
       - 'charts.py'
+      - 'context_snapshots.sql'
+      - 'context_usage.sql'
       - '.github/workflows/validation_run_trigger.yaml'
 
 jobs:
@@ -28,13 +32,25 @@ jobs:
       run: sqlite3 inferences.sqlite < evaluation_runs.sql
 
     - name: Restore inferences
-      run: sqlite3 inferences.sqlite < inferences.sql      
+      run: sqlite3 inferences.sqlite < inferences.sql
+
+    - name: Restore context snapshots
+      run: sqlite3 inferences.sqlite < context_snapshots.sql
+
+    - name: Restore details of context usage
+      run: sqlite3 inferences.sqlite < context_usage.sql
      
     - name: Run charts.py
-      run: python charts.py
+      run: python3 charts.py
 
     - name: Run neural-results-chart.py
-      run: python neural-results-chart.py --input neural-results.csv --output neural-results.png
+      run: python3 neural-results-chart.py --input neural-results.csv --output neural-results.png
+
+    - name: Run context history for sense1
+      run: python3 ctxkhistochart.py --input inferences.sqlite --output sense-annotated1-context-usage.png --filename /ultratree/language-model/sense-annotated1.sqlite
+
+    - name: Run context history for unannotated1
+      run: python3 ctxkhistochart.py --input inferences.sqlite --output unannotated-context-usage.png --filename /ultratree/language-model/unannotated-model1.sqlite
       
     - name: Commit and Push Changes
       env:
@@ -53,6 +69,8 @@ jobs:
         git add noun_loss_vs_time.png
         git add neural-results.png 
         git add plain_models_loss_vs_size.png
-        git add exotic_models_loss_vs_size.png	
+        git add exotic_models_loss_vs_size.png
+        git add sense-annotated1-context-usage.png
+        git add unannotated-context-usage.png        
         git commit -m "Add generated images [skip ci]" || echo "No changes to commit"
         git push https://${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git

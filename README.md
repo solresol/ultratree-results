@@ -42,6 +42,12 @@ To-do: if the ensemble looks good, add it to the chart
 
 ![Average In-Region Hits vs Time](average_in_region_hits_vs_time.png)
 
+## Context Usage
+
+![Sense Annotated](sense-annotated1-context-usage.png)
+
+![Unannotated](unannotated-context-usage.png)
+
 
 # How to reproduce these results
 
