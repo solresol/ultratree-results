@@ -15,7 +15,7 @@ def fetch_histogram_data(db_path, target_filename):
         target_filename (str): Original filename to look up
         
     Returns:
-        tuple: (snapshot_id, timestamp, cutoff, DataFrame with k and appearance_count)
+        tuple: (snapshot_id, timestamp, DataFrame with k and appearance_count)
     """
     conn = sqlite3.connect(db_path)
     
