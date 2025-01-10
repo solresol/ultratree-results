@@ -21,7 +21,7 @@ def fetch_histogram_data(db_path, target_filename):
     
     # First get the most recent snapshot for this filename
     snapshot_query = """
-    SELECT context_snapshot_id, when_captured, cut_off
+    SELECT context_snapshot_id, when_captured
     FROM context_snapshots
     WHERE filename = ?
     ORDER BY when_captured DESC
@@ -35,7 +35,7 @@ def fetch_histogram_data(db_path, target_filename):
         conn.close()
         raise ValueError(f"No snapshots found for filename: {target_filename}")
         
-    snapshot_id, timestamp, cutoff = row
+    snapshot_id, timestamp = row
     
     # Now get the histogram data for this snapshot
     histogram_query = """
@@ -48,9 +48,9 @@ def fetch_histogram_data(db_path, target_filename):
     df = pd.read_sql_query(histogram_query, conn, params=(snapshot_id,))
     conn.close()
     
-    return snapshot_id, timestamp, cutoff, df
+    return snapshot_id, timestamp, df
 
-def create_bar_chart(df, output_path, title=None, timestamp=None, cutoff=None, model_filename=None):
+def create_bar_chart(df, output_path, title=None, timestamp=None, model_filename=None):
     """
     Create a bar chart from the histogram data.
     
@@ -59,7 +59,6 @@ def create_bar_chart(df, output_path, title=None, timestamp=None, cutoff=None, m
         output_path (str): Path where to save the image
         title (str, optional): Custom title for the chart
         timestamp (str, optional): When the snapshot was captured
-        cutoff (str, optional): Cutoff timestamp if any
     """
     plt.figure(figsize=(12, 6))
     
@@ -79,8 +78,6 @@ def create_bar_chart(df, output_path, title=None, timestamp=None, cutoff=None, m
     # Add timestamp information in smaller text below main title
     if timestamp:
         chart_title += f'\nSnapshot from {timestamp}'
-    if cutoff:
-        chart_title += f'\nCutoff: {cutoff}'
     if model_filename:
         model_filename = os.path.basename(model_filename)
         if model_filename.endswith('.sqlite'):
@@ -129,7 +126,7 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     # Fetch the data
-    snapshot_id, timestamp, cutoff, df = fetch_histogram_data(
+    snapshot_id, timestamp, df = fetch_histogram_data(
         args.database,
         args.filename
     )
@@ -140,12 +137,9 @@ if __name__ == '__main__':
         args.output,
         args.title,
         timestamp,
-        cutoff,
         args.filename
     )
     
     print(f"Bar chart successfully saved to {args.output}")
     print(f"Used snapshot {snapshot_id} from {timestamp}")
-    if cutoff:
-        print(f"Cutoff time: {cutoff}")
 
