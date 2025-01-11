@@ -162,3 +162,4 @@ cython_debug/
 #.idea/
 inferences.sqlite
 validation.sqlite
+*~
