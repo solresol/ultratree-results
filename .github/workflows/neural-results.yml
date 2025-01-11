@@ -5,6 +5,7 @@ on:
     paths:
       - 'neural-results-chart.py'
       - 'neural-results.csv'
+      - '.github/workflows/neural-results.yml'
 
 jobs:
   build:
@@ -15,7 +16,10 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Execute SQL script
-      run: sqlite3 inferences.sqlite < evaluation_runs.sql 
+      run: sqlite3 inferences.sqlite < evaluation_runs.sql
+
+    - name: Restore inferences
+      run: sqlite3 inferences.sqlite < inferences.sql
 
     - name: Set up Python
       uses: actions/setup-python@v3
@@ -38,5 +42,6 @@ jobs:
     - name: Commit and push changes
       run: |
         git add neural-results.png
+        git add noun-baseline.png
         git commit -m "Update neural-results.png"
         git push

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import sqlite3
 import typing
@@ -42,10 +44,14 @@ def modelfile2displayname(modelfile: str) -> str:
     return basename
     
 
-def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False, skip_list: list[str] = []) -> None:
+def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False, skip_list: list[str] = [], keep_list: list[str] = None) -> None:
+    if keep_list and skip_list:
+       sys.exit("Had a skip list and a keep list")
     df = df.sort_values(by=x_column)
     fig, ax = matplotlib.pyplot.subplots()
     display_names = { modelfile2displayname(modelfile) : modelfile for modelfile in df.model_file.unique()}
+    if keep_list:
+       skip_list = [k for k in display_names.keys() if k not in keep_list]
     for displayname in sorted(display_names.keys()):
         if displayname in skip_list:
             continue
@@ -91,11 +97,18 @@ def main() -> None:
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_depth', 'Average Depth', 'average_depth_vs_time.png')
     plot_and_save(df, 'cutoff_date', 'Model creation date', 'average_in_region_hits', 'Average In-Region Hits', 'average_in_region_hits_vs_time.png')
 
-    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size.png', skip_list = ['Ensemble'])
-    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out noun data', 'noun_loss_vs_model_size.png', skip_list = ['Ensemble'])    
+    standard_models = [f'Sense Annotated {i}' for i in [1,2,3,4,5]]
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size.png', skip_list = ['Ensemble'], log_x = True)
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out noun data', 'noun_loss_vs_model_size.png', keep_list = standard_models, log_x = True)    
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'plain_models_loss_vs_size.png', keep_list = standard_models, log_x = True)
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'exotic_models_loss_vs_size.png', skip_list = standard_models, log_x = True)
 
-    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1', 'Careful10', 'Careful100', 'Careful10000'])
-    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out noun data', 'noun_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1', 'Careful10', 'Careful100', 'Careful10000'])    
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'careful10000_loss_vs_size.png', keep_list = ['Careful10000'], log_x = True)
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out data', 'careful10000_noun_loss_vs_size.png', keep_list = ['Careful10000'], log_x = True)
+
+    
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'total_loss', 'Loss on held-out data', 'total_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1', 'Careful10', 'Careful100', 'Careful10000'], log_x = True)
+    plot_and_save(df, 'model_node_count', 'Model Size\n(Node count)', 'noun_loss', 'Loss on held-out noun data', 'noun_loss_vs_model_size_with_ensemble.png', skip_list = ['Unannotated Model 1', 'Careful10', 'Careful100', 'Careful10000'], log_x = True)    
 
 if __name__ == '__main__':
     main()
