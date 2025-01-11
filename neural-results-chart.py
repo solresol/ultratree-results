@@ -47,12 +47,12 @@ def main() -> None:
      group by evaluation_run_id, model_file, model_node_count, total_loss
       """, conn)
 
-    fig, ax = plt.pyplot.subplots()
+    fig, ax = plt.subplots()
     plot_data(neural_df, tree_df, ax, 'total_loss', "Total Loss")
     fig.tight_layout()
     fig.savefig(args.output)
 
-    fig, ax = plt.pyplot.subplots()    
+    fig, ax = plt.subplots()    
     plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss")
     fig.tight_layout()
     fig.savefig(args.noun_output)    
