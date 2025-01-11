@@ -1,4 +1,4 @@
-import argparse
+#!/usr/bin/env python3
 
 import argparse
 import matplotlib.pyplot as plt
@@ -44,7 +44,7 @@ def main() -> None:
      group by evaluation_run_id, model_file, model_node_count, total_loss
       """, conn)
 
-    fig, axes = matplotlib.pyplot.subplots(nrows=2, figsize=(10,18))
+    fig, axes = plt.subplots(nrows=2, figsize=(10,18))
     
     plot_data(neural_df, tree_df, axes[0], 'total_loss', "Total Loss")
     plot_data(neural_df, tree_df, axes[1], 'noun_loss', "Noun Loss")    
