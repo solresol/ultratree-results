@@ -9,6 +9,8 @@ These charts update each day.
 
 ![Total Loss vs Model Size for Sense Annotated Models Including Ensembling](total_loss_vs_model_size_with_ensemble.png)
 
+![Total Loss vs Model Size for the Careful 10000 model](careful10000_loss_vs_size.png)
+
 ## Noun Loss
 
 Instead of looking at the total loss over all parts of speech, we would expect that nouns would get the most benefit from
@@ -18,6 +20,7 @@ having sense annotation into a hierarchy.
 
 ![Noun Loss vs Model Size for Sense Annotated Models Including Ensembling](noun_loss_vs_model_size_with_ensemble.png)
 
+![Noun Loss vs Model Size for the Careful 10000 model](careful10000_noun_loss_vs_size.png)
 
 ## Time Views
 
