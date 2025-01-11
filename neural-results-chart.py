@@ -1,10 +1,12 @@
-import argparse
+#!/usr/bin/env python3
 
-import matplotlib.pyplot
+import argparse
+import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 import pandas as pd
 import sqlite3
 
-def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax, column_name, column_title) -> None:
+def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',')]
     for name in sorted(tree_df.model_file.unique()):
@@ -45,13 +47,12 @@ def main() -> None:
      group by evaluation_run_id, model_file, model_node_count, total_loss
       """, conn)
 
-    #fig, axes = matplotlib.pyplot.subplots(nrows=2, figsize=(10,18))
-    fig, ax = matplotlib.pyplot.subplots()
+    fig, ax = plt.subplots()
     plot_data(neural_df, tree_df, ax, 'total_loss', "Total Loss")
     fig.tight_layout()
     fig.savefig(args.output)
 
-    fig, ax = matplotlib.pyplot.subplots()    
+    fig, ax = plt.subplots()    
     plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss")
     fig.tight_layout()
     fig.savefig(args.noun_output)    

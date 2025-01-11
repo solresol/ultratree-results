@@ -2,6 +2,7 @@
 
 import argparse
 import sqlite3
+import typing
 
 import matplotlib.pyplot
 import pandas as pd
