@@ -59,4 +59,10 @@ INSERT INTO context_snapshots VALUES(51,'/ultratree/language-model/sense-annotat
 INSERT INTO context_snapshots VALUES(52,'/ultratree/language-model/sense-annotated4.sqlite','2025-01-14 13:12:31');
 INSERT INTO context_snapshots VALUES(53,'/ultratree/language-model/sense-annotated5.sqlite','2025-01-14 13:15:32');
 INSERT INTO context_snapshots VALUES(54,'/ultratree/language-model/unannotated-model1.sqlite','2025-01-14 13:37:07');
+INSERT INTO context_snapshots VALUES(55,'/ultratree/language-model/sense-annotated1.sqlite','2025-01-15 13:03:00');
+INSERT INTO context_snapshots VALUES(56,'/ultratree/language-model/sense-annotated2.sqlite','2025-01-15 13:06:23');
+INSERT INTO context_snapshots VALUES(57,'/ultratree/language-model/sense-annotated3.sqlite','2025-01-15 13:09:42');
+INSERT INTO context_snapshots VALUES(58,'/ultratree/language-model/sense-annotated4.sqlite','2025-01-15 13:12:39');
+INSERT INTO context_snapshots VALUES(59,'/ultratree/language-model/sense-annotated5.sqlite','2025-01-15 13:15:41');
+INSERT INTO context_snapshots VALUES(60,'/ultratree/language-model/unannotated-model1.sqlite','2025-01-15 13:37:33');
 COMMIT;
