@@ -5,10 +5,28 @@ import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 import pandas as pd
 import sqlite3
+import math
+import sklearn.linear_model
+
+def extrapolate(series):
+    starting_point = math.log10(series.index.max())
+    ending_point = 7 ; # 10,000,000 nodes -- the size of the largest neural model
+    extrapolation_x = [starting_point]
+    extrapolation_x += range(int(starting_point)+1,ending_point+1)
+    extrapolation_dataframe = pd.DataFrame({'log_parameter_count': extrapolation_x})
+    training_data = pd.DataFrame({'loss': series})
+    training_data['parameter_count'] = training_data.index
+    training_data['log_parameter_count'] = training_data.parameter_count.map(math.log10)
+    ts = sklearn.linear_model.TheilSenRegressor()
+    ts.fit(training_data[['log_parameter_count']], training_data.loss)
+    extrapolation_dataframe['loss'] = ts.predict(extrapolation_dataframe[['log_parameter_count']])
+    extrapolation_dataframe['parameter_count'] = extrapolation_dataframe.log_parameter_count.map(lambda x: 10 ** x)
+    #print(ts.coef_)
+    return extrapolation_dataframe
 
 def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str) -> None:
     # just show the #1 model to keep the chart simple
-    tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',')]
+    tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',') | tree_df.model_file.str.contains('careful10000')]
     for name in sorted(tree_df.model_file.unique()):
         sub_df = tree_df[tree_df.model_file == name]
         if 'unannotated' in name:
@@ -16,10 +34,23 @@ def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: st
             continue
         elif ',' in name:
             label="Ensemble"
+            marker = '^'
+            color = "orange"
+        elif 'careful10000' in name:
+            label="Careful 10000"
+            marker = "+"
+            color = "purple"
         else:
             label='Ultra-tree sense annotated model'
             continue
-        sub_df.set_index('model_node_count').sort_index()[column_name].plot(ax=ax, label=label, marker="^", color="red", linestyle="dashed")
+        sub_df.set_index('model_node_count').sort_index()[column_name].plot(ax=ax, label=label, marker=marker, color=color)
+        #print(label)
+        extrapolation = extrapolate(sub_df.set_index('model_node_count')[column_name])
+        extrapolation.set_index('parameter_count').loss.plot(ax=ax, label=f"Extrapolation of {label}",
+                                                                     linestyle="dotted",
+                                                                     marker="", color=color)
+        #print(extrapolation)
+                                    
     for name in sorted(df.augmentation.unique()):
         df[df.augmentation == name].set_index('model_parameter_count')[column_name].plot(ax=ax, marker='o', label=f"{name} neural")
     ax.set_xlabel('Model Parameter Count')
