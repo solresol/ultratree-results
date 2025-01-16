@@ -21,11 +21,6 @@ jobs:
     - name: Restore inferences
       run: sqlite3 inferences.sqlite < inferences.sql
 
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-
     - name: Install dependencies
       run: sudo apt-get install -y python3-pandas python3-sklearn python3-matplotlib
 
