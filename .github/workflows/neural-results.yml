@@ -8,7 +8,7 @@ on:
       - '.github/workflows/neural-results.yml'
 
 jobs:
-  build:
+  neural-results:
     runs-on: ubuntu-latest
 
     steps:
