@@ -28,7 +28,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install Python3 Pandas
-      run: sudo apt-get install -y python3-pandas
+      run: sudo apt-get install -y python3-pandas python3-sklearn
 
     - name: Restore evaluation runs
       run: sqlite3 inferences.sqlite < evaluation_runs.sql
