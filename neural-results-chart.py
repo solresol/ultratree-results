@@ -24,7 +24,7 @@ def extrapolate(series):
     #print(ts.coef_)
     return extrapolation_dataframe
 
-def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str) -> None:
+def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str, do_extrapolate: bool = True) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',') | tree_df.model_file.str.contains('careful10000')]
     for name in sorted(tree_df.model_file.unique()):
@@ -45,11 +45,12 @@ def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: st
             continue
         sub_df.set_index('model_node_count').sort_index()[column_name].plot(ax=ax, label=label, marker=marker, color=color)
         #print(label)
-        extrapolation = extrapolate(sub_df.set_index('model_node_count')[column_name])
-        extrapolation.set_index('parameter_count').loss.plot(ax=ax, label=f"Extrapolation of {label}",
-                                                                     linestyle="dotted",
+        if do_extrapolate:
+            extrapolation = extrapolate(sub_df.set_index('model_node_count')[column_name])
+            extrapolation.set_index('parameter_count').loss.plot(ax=ax, label=f"Extrapolation of {label}",
+                                                                 linestyle="dotted",
                                                                      marker="", color=color)
-        #print(extrapolation)
+            #print(extrapolation)
                                     
     for name in sorted(df.augmentation.unique()):
         df[df.augmentation == name].set_index('model_parameter_count')[column_name].plot(ax=ax, marker='o', label=f"{name} neural")
@@ -84,7 +85,7 @@ def main() -> None:
     fig.savefig(args.output)
 
     fig, ax = plt.subplots()    
-    plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss")
+    plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss", do_extrapolate=False)
     fig.tight_layout()
     fig.savefig(args.noun_output)    
 

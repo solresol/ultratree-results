@@ -72,6 +72,11 @@ which means that the loss on all other parts of speech much be dropping even mor
 
 ![Noun Loss vs Model Size](noun_loss_vs_model_size.png)
 
+We do see that the ultratree models soundly outperform neural network models on nouns though.
+Neural networks are behaving as one would expect: larger models have more generalised learning.
+
+![Noun Loss vs Neural Networks](noun-baseline.png)
+
 
 ## Everything Else
 
