@@ -8,7 +8,7 @@ import sqlite3
 import math
 import sklearn.linear_model
 
-def extrapolate(series):
+def extrapolate(series: pd.Series) -> pd.DataFrame:
     starting_point = math.log10(series.index.max())
     ending_point = 7 ; # 10,000,000 nodes -- the size of the largest neural model
     extrapolation_x = [starting_point]
