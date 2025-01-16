@@ -62,32 +62,6 @@ def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: st
     ax.legend()
 
 def main() -> None:
-    parser: argparse.ArgumentParser = argparse.ArgumentParser(description='Plot total_loss vs model_parameter_count from a CSV file.')
-    parser.add_argument('--input', default='neural-results.csv', help='Path to the input CSV file.')
-    parser.add_argument('--output', default='neural-results.png', help='Path to the output PNG file.')
-    parser.add_argument("--noun-output", default="noun-baseline.png", help="Path to the output PNG file for losses on nouns")
-    parser.add_argument('--tree-data-input', default='inferences.sqlite', help="SQLite database with inference results")
-    args: argparse.Namespace = parser.parse_args()
-
-    neural_df: pd.DataFrame = pd.read_csv(args.input).sort_values('model_parameter_count')
-    conn: sqlite3.Connection = sqlite3.connect(args.tree_data_input)
-    tree_df: pd.DataFrame = pd.read_sql("""
-       select evaluation_run_id, model_file, model_node_count, total_loss, sum(loss) as noun_loss
-         from inferences join evaluation_runs using (evaluation_run_id)
-        where model_node_count is not null and total_loss is not null
-          and correct_path like '1.%.%'
-     group by evaluation_run_id, model_file, model_node_count, total_loss
-      """, conn)
-
-    fig, ax = plt.subplots()
-    plot_data(neural_df, tree_df, ax, 'total_loss', "Total Loss")
-    fig.tight_layout()
-    fig.savefig(args.output)
-
-    fig, ax = plt.subplots()    
-    plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss", do_extrapolate=False)
-    fig.tight_layout()
-    fig.savefig(args.noun_output)    
     parser = argparse.ArgumentParser(description='Plot total_loss vs model_parameter_count from a CSV file.')
     parser.add_argument('--input', default='neural-results.csv', help='Path to the input CSV file.')
     parser.add_argument('--output', default='neural-results.png', help='Path to the output PNG file.')
