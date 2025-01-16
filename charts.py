@@ -44,7 +44,7 @@ def modelfile2displayname(modelfile: str) -> str:
     return basename
     
 
-def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False, skip_list: list[str] = [], keep_list: list[str] = None, min_x: int = 0) -> None:
+def plot_and_save(df: pd.DataFrame, x_column: str, x_label: str, y_column: str, y_label: str, filename: str, log_x: bool = False, log_y: bool = False, skip_list: typing.List[str] = [], keep_list: typing.Optional[typing.List[str]] = None, min_x: int = 0) -> None:
     if keep_list and skip_list:
        sys.exit("Had a skip list and a keep list")
     df = df.sort_values(by=x_column)
