@@ -51,6 +51,9 @@ jobs:
     - name: Run context history for sense1
       run: python3 ctxkhistochart.py --database inferences.sqlite --output sense-annotated1-context-usage.png --filename /ultratree/language-model/sense-annotated1.sqlite
 
+    - name: Run context history for careful 10000
+      run: python3 ctxkhistochart.py --database inferences.sqlite --output careful10000-context-usage.png --filename /ultratree/language-model/careful10000.sqlite
+      
     - name: Run context history for unannotated1
       run: python3 ctxkhistochart.py --database inferences.sqlite --output unannotated-context-usage.png --filename /ultratree/language-model/unannotated-model1.sqlite
       
@@ -74,6 +77,7 @@ jobs:
         git add exotic_models_loss_vs_size.png
         git add sense-annotated1-context-usage.png
         git add unannotated-context-usage.png
+        git add careful10000-context-usage.png        
         git add careful10000_loss_vs_size.png
         git add careful10000_noun_loss_vs_size.png
         git add levels_of_careful.png

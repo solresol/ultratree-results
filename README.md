@@ -77,6 +77,22 @@ Neural networks are behaving as one would expect: larger models have more genera
 
 ![Noun Loss vs Neural Networks](noun-baseline.png)
 
+Theory: the ultrametric models mostly predict nouns, because nouns are
+  the most common part of speech in the corpus, and they can group parts
+  of speech together into an aggregate.
+The neural network mostly predicts punctuation, since it has no
+  way of aggregating parts of speech together without internalising
+  rules of grammar. The ``.'' character is the most common ``word'' in
+  the corpus, so all else being equal, it will get predicted more
+  often.
+
+
+### Context usage
+
+We can see which contexts get used for node splitting. (This is not the same as asking which nodes get used the most often
+in inference.)
+
+![Histogram of context usage](careful10000-context-usage.png)
 
 ## Everything Else
 
