@@ -43,7 +43,7 @@ def load_and_process_data(conn, run_id, key_name):
     
     return df
 
-def create_confusion_matrix(df):
+def create_confusion_matrix(df: pd.DataFrame) -> plt.Figure:
     """Create confusion matrix and plot heatmap"""
     # Create confusion matrix
     confusion = pd.crosstab(
@@ -69,7 +69,7 @@ def create_confusion_matrix(df):
     
     return plt.gcf()
 
-def main():
+def main() -> None:
     # Set up argument parser
     parser = argparse.ArgumentParser(description='Generate POS confusion matrix from inference data')
     parser.add_argument('--dbpath', help='Path to SQLite database', required=True)
