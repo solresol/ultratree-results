@@ -11,6 +11,7 @@ import sklearn.linear_model
 def extrapolate(series: pd.Series) -> pd.DataFrame:
     starting_point = math.log10(series.index.max())
     ending_point = 7 ; # 10,000,000 nodes -- the size of the largest neural model
+    ending_point = 11 ; # hopefully large enough to sort of see some relationship
     extrapolation_x = [starting_point]
     extrapolation_x += range(int(starting_point)+1,ending_point+1)
     extrapolation_dataframe = pd.DataFrame({'log_parameter_count': extrapolation_x})
@@ -59,6 +60,7 @@ def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: st
     ax.set_title(f'{column_title} vs Model Parameter Count')
     ax.set_xscale('log')
     #ax.set_yscale('log')
+    ax.grid(True)
     ax.legend()
 
 def main() -> None:
