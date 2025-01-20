@@ -33,6 +33,9 @@ jobs:
     - name: Restore evaluation runs
       run: sqlite3 inferences.sqlite < evaluation_runs.sql
 
+    - name: Decompress inferences
+      run: gunzip inferences.sql.gz
+
     - name: Restore inferences
       run: sqlite3 inferences.sqlite < inferences.sql
 
