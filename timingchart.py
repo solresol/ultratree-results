@@ -5,7 +5,9 @@ import argparse
 import matplotlib.pyplot as plt
 from datetime import datetime
 
-def fetch_time_gaps(database_path, cutoff_threshold):
+from typing import List
+
+def fetch_time_gaps(database_path: str, cutoff_threshold: int) -> List[float]:
     """
     Fetch time gaps between successive timestamps from the SQLite database,
     filtering out gaps larger than the cutoff threshold and zero-second gaps.
@@ -41,7 +43,7 @@ def fetch_time_gaps(database_path, cutoff_threshold):
     connection.close()
     return gaps
 
-def plot_histogram(gaps, cutoff_threshold, output_path):
+def plot_histogram(gaps: List[float], cutoff_threshold: int, output_path: str) -> None:
     """Plot a histogram of the time gaps."""
     fig, ax = plt.subplots()
     ax.hist(gaps, bins=50, edgecolor='black')
