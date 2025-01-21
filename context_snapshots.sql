@@ -119,4 +119,13 @@ INSERT INTO context_snapshots VALUES(111,'/ultratree/language-model/unannotated-
 INSERT INTO context_snapshots VALUES(112,'/ultratree/language-model/careful10.sqlite','2025-01-20 13:05:50');
 INSERT INTO context_snapshots VALUES(113,'/ultratree/language-model/careful100.sqlite','2025-01-20 13:05:50');
 INSERT INTO context_snapshots VALUES(114,'/ultratree/language-model/careful10000.sqlite','2025-01-20 13:05:50');
+INSERT INTO context_snapshots VALUES(115,'/ultratree/language-model/sense-annotated1.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(116,'/ultratree/language-model/sense-annotated2.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(117,'/ultratree/language-model/sense-annotated3.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(118,'/ultratree/language-model/sense-annotated4.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(119,'/ultratree/language-model/sense-annotated5.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(120,'/ultratree/language-model/unannotated-model1.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(121,'/ultratree/language-model/careful10.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(122,'/ultratree/language-model/careful100.sqlite','2025-01-21 13:05:52');
+INSERT INTO context_snapshots VALUES(123,'/ultratree/language-model/careful10000.sqlite','2025-01-21 13:05:52');
 COMMIT;
