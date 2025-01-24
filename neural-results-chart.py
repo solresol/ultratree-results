@@ -28,7 +28,7 @@ def extrapolate(series: pd.Series) -> pd.DataFrame:
 def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str, do_extrapolate: bool = True, min_x : int = 0) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',') | tree_df.model_file.str.contains('careful10000')]
-    tree_df = tree_df[tree_df.model_parameter_count > min_x]
+    tree_df = tree_df[tree_df.model_node_count > min_x]
     for name in sorted(tree_df.model_file.unique()):
         sub_df = tree_df[tree_df.model_file == name]
         if 'unannotated' in name:
