@@ -25,9 +25,10 @@ def extrapolate(series: pd.Series) -> pd.DataFrame:
     #print(ts.coef_)
     return extrapolation_dataframe
 
-def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str, do_extrapolate: bool = True) -> None:
+def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str, do_extrapolate: bool = True, min_x : int = 0) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',') | tree_df.model_file.str.contains('careful10000')]
+    tree_df = tree_df[tree_df.model_parameter_count > min_x]
     for name in sorted(tree_df.model_file.unique()):
         sub_df = tree_df[tree_df.model_file == name]
         if 'unannotated' in name:
@@ -87,7 +88,7 @@ def main() -> None:
     fig.savefig(args.output)
 
     fig, ax = plt.subplots()    
-    plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss", do_extrapolate=False)
+    plot_data(neural_df, tree_df, ax, 'noun_loss', "Noun Loss", do_extrapolate=False, min_x=25)
     fig.tight_layout()
     fig.savefig(args.noun_output)    
 
