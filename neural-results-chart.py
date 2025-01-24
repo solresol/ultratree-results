@@ -3,6 +3,7 @@
 import argparse
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
+from typing import Optional
 import pandas as pd
 import sqlite3
 import math
@@ -25,7 +26,7 @@ def extrapolate(series: pd.Series) -> pd.DataFrame:
     #print(ts.coef_)
     return extrapolation_dataframe
 
-def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str, do_extrapolate: bool = True, min_x : int = 0) -> None:
+def plot_data(df: pd.DataFrame, tree_df: pd.DataFrame, ax: Axes, column_name: str, column_title: str, do_extrapolate: bool = True, min_x: Optional[int] = None) -> None:
     # just show the #1 model to keep the chart simple
     tree_df = tree_df[tree_df.model_file.str.endswith('1.sqlite') | tree_df.model_file.str.contains(',') | tree_df.model_file.str.contains('careful10000')]
     tree_df = tree_df[tree_df.model_node_count > min_x]
